@@ -1,5 +1,10 @@
 apply plugin: 'com.android.application'
 
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0' //version required
+}
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.0"
