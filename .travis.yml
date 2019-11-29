@@ -19,5 +19,6 @@ android:
     - android-sdk-license-.+
 script:
   - "./gradlew assembleRelease"
+
 before_install:
  - chmod +x gradlew
