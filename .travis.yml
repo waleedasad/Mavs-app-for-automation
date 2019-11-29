@@ -17,6 +17,5 @@ android:
     - sys-img-armeabi-v7a-addon-google_apis-google-26
   licenses:
     - android-sdk-license-.+
-
-before_install:
- - chmod +x gradlew
+script:
+  - "./gradlew assembleRelease"
