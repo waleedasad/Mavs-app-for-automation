@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.0' //version required
+    gradleVersion = '4.1' //version required
 }
 
 android {
