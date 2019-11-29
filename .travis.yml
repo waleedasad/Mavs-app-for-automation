@@ -32,5 +32,12 @@ android:
     - android-sdk-preview-license-.+
     - android-sdk-license-.+
     - google-gdk-license-.+
+before_install:
+  - chmod +x gradlew
 script:
   - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
+notifications:
+  email:
+    recipients:
+      - waleed@pumpjackdataworks.com
+    on_success: always
