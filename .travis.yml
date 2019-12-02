@@ -17,6 +17,7 @@ android:
     - platform-tools
     - build-tools-24.0.2
     - android-22
+    - android-24
     - extra-google-m2repository
     - extra-android-m2repository # for design library
     - addon-google_apis-google-19 # google play services
