@@ -18,6 +18,7 @@ android:
     - build-tools-29.0.0
     - android-22
     - android-24
+    - android-29
     - extra-google-m2repository
     - extra-android-m2repository # for design library
     - addon-google_apis-google-19 # google play services
