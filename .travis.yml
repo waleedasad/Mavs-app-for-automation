@@ -2,8 +2,8 @@ language: android
 sudo: false
 jdk: oraclejdk8
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+ - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+ - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
   - "$HOME/.gradle/caches/"
@@ -41,7 +41,8 @@ before_script:
 script:
   - "./gradlew clean build"
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-  ./gradlew publishReleaseApk; fi
+      ./gradlew publishReleaseApk;
+      fi
 before_deploy:
   - cp $TRAVIS_BUILD_DIR/androidTestApp.jks $HOME
   - cd app/build/outputs/apk/
