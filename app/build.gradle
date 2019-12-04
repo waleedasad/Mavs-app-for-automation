@@ -55,6 +55,7 @@ if (isRunningOnTravisAndIsNotPRBuild) {
     play {
         track = "alpha"
         userFraction = 1
+        serviceAccountEmail = System.getenv("SERVICE_ACCOUNT_NAME")
         serviceAccountCredentials = file("api-5888530012451153317-910289-17cb4835c79c.json")
         resolutionStrategy = "auto"
         outputProcessor { // this: ApkVariantOutput
