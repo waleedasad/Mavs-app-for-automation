@@ -39,7 +39,7 @@ before_script:
   - adb shell input keyevent 82 &
 script:
   - "./gradlew clean build"
-  -  [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
     ./gradlew publishReleaseApk;
     fi
 before_deploy:
