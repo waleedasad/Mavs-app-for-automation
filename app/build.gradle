@@ -30,7 +30,7 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -54,6 +54,7 @@ dependencies {
 if (isRunningOnTravisAndIsNotPRBuild) {
     play {
         track = "alpha"
+        userFraction = 1
         serviceAccountEmail = System.getenv("SERVICE_ACCOUNT_NAME")
         serviceAccountCredentials = file("../api-5888530012451153317-910289-17cb4835c79c.json")
         resolutionStrategy = "auto"

@@ -41,8 +41,7 @@ before_script:
 script:
   - "./gradlew clean build"
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-    ./gradlew publishReleaseApk;
-    fi
+  ./gradlew publishReleaseApk; fi
 before_deploy:
   - cp $TRAVIS_BUILD_DIR/androidTestApp.jks $HOME
   - cd app/build/outputs/apk/
