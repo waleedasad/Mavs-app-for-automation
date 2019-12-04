@@ -1,6 +1,12 @@
 apply plugin: 'com.android.application'
 
 
+def isRunningOnTravisAndIsNotPRBuild = System.getenv("CI") == "true" && file('../api-5888530012451153317-910289-17cb4835c79c.json').exists()
+
+if(isRunningOnTravisAndIsNotPRBuild) {
+    apply plugin: 'com.github.triplet.play'
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0' //version required
 }
@@ -16,14 +22,25 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    if (isRunningOnTravisAndIsNotPRBuild) {
+        signingConfigs.release.storeFile = file("../androidTestApp.jks")
+        signingConfigs.release.storePassword = System.getenv("STORE_PASS")
+        signingConfigs.release.keyAlias = System.getenv("KEY_ALIAS")
+        signingConfigs.release.keyPassword = System.getenv("KEY_PASS")
+    }
 }
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.2'
@@ -32,4 +49,17 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
 //    androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+}
+
+if (isRunningOnTravisAndIsNotPRBuild) {
+    play {
+        track = "alpha"
+        userFraction = 1
+        serviceAccountEmail = "automate-indy-build@api-5888530012451153317-910289.iam.gserviceaccount.com"
+        serviceAccountCredentials = file("../api-5888530012451153317-910289-17cb4835c79c.json")
+        resolutionStrategy = "auto"
+        outputProcessor { // this: ApkVariantOutput
+            versionNameOverride = "$versionNameOverride.$versionCode"
+        }
+    }
 }

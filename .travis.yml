@@ -1,57 +1,51 @@
 language: android
 sudo: false
 jdk: oraclejdk8
-
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-
-env:
-  global:
-   - secure: "F9MQTPa+LM/XHIYkWVD3O4rpFKyYL/cI6p19hYPOfhoZ/DmcGJdqWTudaOxEhaYahMIye389vC1KC0cdpkw98kOdwl+KmIXAyyIrbk3yI8ba9pdfZhyF3FTiSe2EP54H9f/7OMs+EbhT9bsy1wlLXLm/rdaMca0iuGpbxoj0CFBpVFqSwOSKSgFXS3wWF0IrxX4lfVHd2i1gCNq6JE+fMpVtavnFx4B2J5V0qcKOr+D+Q02R3L4L4Y1ZwV5U+GPQvb8GSDHYBPeCM31lHIqgpQ1j8PLimb6HlgotURIgxFgiJC2tpNbd41oW4vhrWK1EZ8tRQioGSETXch3i6jiiljfkD2LOCRYN5tg+lIgG9600GHDjNhkRwvFDjyPe9ISWIHZMZ8oDi3IBFIbei1885sZyRTrekhsgPV0JtRLDcCTGXimN4ECEEOQ3mDyJ/O2ZaSgQ/QL0FoDfcD8/hePadTj+dy1AZSxk9vIB20BINUz2w0NIBeRjg/zpgYNKdFicuErNpDTAD7GB0eswsbsDrOBBvgwLAo5Rz/sifNSrYCg/gjePOTMKLmmCDr/OQVRMwqfrYkAV0vTHPJksSqbxcvLLNTPEqPiKy7Ih9V4oBHKjBf89X8ptorGFtOwuCltGbU4+w0IM09QJRAFFgJGcTn+kfpEi+AkoW6kAuZaEyCs="
-   - secure: "z8LcilF6m7jA9Q03hXWWvcw0alFiEOjxOq5NdNSUZYMHDP8DgXAWz4gqAEN5Uk9gANq6WvxslmBmLUpFD/y6WKzfxHoP4PNuPR9nllK2If7RH8qGJHV4HH95ijh1XNnvNvpFEOKP3CUkE4ggcfuLmcJWMKAPxAdlNJWs8WAgosWVCHSGqCMVXqGUyF1daTaa81yzd8vHaHZJDHt6G8JVYyeQ5z+iYfkOI1eHFEZ4XbTjWrnZ6mwDNrk/VIlTsmyV7U/g8v6+11RtEVx7L1fz05fSe1tB2n3DshzrZfCo8z+LekRML0ENMXWLEy4UeNwmzncJ3HpeAYaTYoo1oxuKjoeOkS/QoeD7d00KxNY0QZbv8I7i9SgGtl82dPLeugXpEKppv0/Vp+EDU0FlSmtVG70v/y1IE5MYn5MCOHTKK5rGM4HQKFSpjZ01saFvhZUMjSSARr552NBVajwYitx9NuWohxnaOAkggSYz4PWxuRvzyM+BC2eDxVBwybV6Mhf6P0bJ/yRYF+13kVLzNRcsASHEBSP1uDlOFrcYWozcNRFt5lmu790EGgK3lZRsGs/1PEzqMNcPrM/2NLJPXbncDARokw4J8XuxfbLIwBdBW+8QVmy7ipwGNqdhgBo12sBUjDCHHFrUUYK99JowrBuFwZnw/VQWR7k+5z9OqYu/yK4="
-
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-29.0.0
-    - android-22
-    - android-24
-    - android-29
-    - extra-google-m2repository
-    - extra-android-m2repository # for design library
-    - addon-google_apis-google-19 # google play services
-    - sys-img-armeabi-v7a-android-22
+  - tools
+  - platform-tools
+  - build-tools-29.0.0
+  - android-22
+  - android-24
+  - android-29
+  - extra-google-m2repository
+  - extra-android-m2repository
+  - addon-google_apis-google-19
+  - sys-img-armeabi-v7a-android-22
   licenses:
-    - android-sdk-preview-license-.+
-    - android-sdk-license-.+
-    - google-gdk-license-.+
+  - android-sdk-preview-license-.+
+  - android-sdk-license-.+
+  - google-gdk-license-.+
 before_install:
-  - openssl aes-256-cbc -K $encrypted_2d15a3c6f9de_key -iv $encrypted_2d15a3c6f9de_iv -in androidTestApp.jks.enc -out androidTestApp.jks -d
+  - openssl aes-256-cbc -K $encrypted_2d15a3c6f9de_key -iv $encrypted_2d15a3c6f9de_iv -in secrets.tar.enc -out secrets.tar -d
+  - tar xzvf secrets.tar
   - mkdir "$ANDROID_HOME/licenses" || true
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
   - chmod +x gradlew
-  - ./gradlew dependencies || true
+  - "./gradlew dependencies || true"
 before_script:
   - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
 script:
-  - "./gradlew clean build connectedCheck -PdisablePreDex --stacktrace"
-  - if [ "$TRAVIS_BRANCH" = "master" ]; then ./gradlew publish; else ./gradlew build; fi
+  - "./gradlew clean build"
+  -  [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+    ./gradlew publishReleaseApk;
+    fi
 before_deploy:
   - cp $TRAVIS_BUILD_DIR/androidTestApp.jks $HOME
   - cd app/build/outputs/apk/
-  - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/androidTestApp.jks -storepass $storepass -keypass $keypass app-release-unsigned.apk androidtest
-  # Verification
+  - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore $HOME/androidTestApp.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unsigned.apk $KEY_ALIAS
   - jarsigner -verify app-release-unsigned.apk
   - "${ANDROID_HOME}/build-tools/29.0.0/zipalign -v 4 app-release-unsigned.apk AndroidTestApp.apk"
 deploy:
@@ -64,9 +58,9 @@ deploy:
     jdk: oraclejdk8
     branch: master
   api_key:
-    secure: "JIt62McLmTjha/On8L2LyyihApxQ0BZx9QClM9S/qGTJ3o5WWJaFwcWyI6R40wnJxjR8ZYQ1Z3eSySlaWODGJcB9ePYDWhxlwkhUTCijZ2APy3wEs9rkSE450Jpea1Z+RA/NUooqrmmJzKsvSq26HC3wC+05iNBpRQUcqXmQ81ZavDE+Ckq7YPlWzbfrUh0R8lklmS4DD7OtK/ZLBxNs7QHiJy1Tn1VfvLHhzBSw+HgNQeOulz24g1iCzsqxMGyc+CbQVaG+7qeaBn+wURJjHx1Em5BaPx+kc7Oj1TdZRinKbRH4ZPMdWp+OOnecLfv+buROCi/cJfEmRbDh0A19zjiithN/LWIE5orFBB/IItUwAfQMI/qcvQtOmKYHHJhPPn3s64I7VESyNvt7YmEBSck3V3oG4f95wJQ9ghg3iYZ/CFGFdUU75Kzq2wAUQ0QL3gcYgFwLVFIS248BJTlV0fr8wvTqE+SgGB+3IG6djg/BEUVjF6QNR8LrCAyp7fAx2oAjJultTqHeOEjLc0ScDEGJedAkfjVBrGO72UYTjsmJGNQLdRwB83pLWmqoxG3Fojh4B4X9O5irOjjUomYr2nPNECSWKw4k57M5hdjPXE2pHEWlAJBXEfOSRhI+ZHMrlzD9bfuGSQhp0v+d2Dn+oTWWu8RvjM7wlVp2+8AoIzo="
+    secure: JIt62McLmTjha/On8L2LyyihApxQ0BZx9QClM9S/qGTJ3o5WWJaFwcWyI6R40wnJxjR8ZYQ1Z3eSySlaWODGJcB9ePYDWhxlwkhUTCijZ2APy3wEs9rkSE450Jpea1Z+RA/NUooqrmmJzKsvSq26HC3wC+05iNBpRQUcqXmQ81ZavDE+Ckq7YPlWzbfrUh0R8lklmS4DD7OtK/ZLBxNs7QHiJy1Tn1VfvLHhzBSw+HgNQeOulz24g1iCzsqxMGyc+CbQVaG+7qeaBn+wURJjHx1Em5BaPx+kc7Oj1TdZRinKbRH4ZPMdWp+OOnecLfv+buROCi/cJfEmRbDh0A19zjiithN/LWIE5orFBB/IItUwAfQMI/qcvQtOmKYHHJhPPn3s64I7VESyNvt7YmEBSck3V3oG4f95wJQ9ghg3iYZ/CFGFdUU75Kzq2wAUQ0QL3gcYgFwLVFIS248BJTlV0fr8wvTqE+SgGB+3IG6djg/BEUVjF6QNR8LrCAyp7fAx2oAjJultTqHeOEjLc0ScDEGJedAkfjVBrGO72UYTjsmJGNQLdRwB83pLWmqoxG3Fojh4B4X9O5irOjjUomYr2nPNECSWKw4k57M5hdjPXE2pHEWlAJBXEfOSRhI+ZHMrlzD9bfuGSQhp0v+d2Dn+oTWWu8RvjM7wlVp2+8AoIzo=
 notifications:
   email:
     recipients:
-      - waleed@pumpjackdataworks.com
+    - waleed@pumpjackdataworks.com
     on_success: always
