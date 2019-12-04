@@ -56,7 +56,7 @@ if (isRunningOnTravisAndIsNotPRBuild) {
         track = "alpha"
         userFraction = 1
         serviceAccountEmail = "automate-indy-build@api-5888530012451153317-910289.iam.gserviceaccount.com"
-        serviceAccountCredentials = file("../api-5888530012451153317-910289-17cb4835c79c.json")
+        serviceAccountCredentials = file("api-5888530012451153317-910289-17cb4835c79c.json")
         resolutionStrategy = "auto"
         outputProcessor { // this: ApkVariantOutput
             versionNameOverride = "$versionNameOverride.$versionCode"
