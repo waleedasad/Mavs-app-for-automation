@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 
-def isRunningOnTravisAndIsNotPRBuild = System.getenv("CI") == "true" && file('../api-5888530012451153317-910289-17cb4835c79c.json').exists()
+def isRunningOnTravisAndIsNotPRBuild = System.getenv("CI") == "true" && file('../api-5888530012451153317-910289-f6acb9ef2ca1.json').exists()
 
 if(isRunningOnTravisAndIsNotPRBuild) {
     apply plugin: 'com.github.triplet.play'
@@ -56,7 +56,7 @@ if (isRunningOnTravisAndIsNotPRBuild) {
         track = "alpha"
         userFraction = 1
         serviceAccountEmail = System.getenv("SERVICE_ACCOUNT_NAME")
-        serviceAccountCredentials = file("../api-5888530012451153317-910289-17cb4835c79c.json")
+        serviceAccountCredentials = file("../api-5888530012451153317-910289-f6acb9ef2ca1.json")
         resolutionStrategy = "auto"
         outputProcessor { // this: ApkVariantOutput
             versionNameOverride = "$versionNameOverride.$versionCode"
